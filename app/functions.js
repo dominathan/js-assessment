@@ -3,27 +3,43 @@ if (typeof define !== 'function') { var define = require('amdefine')(module); }
 define(function() {
   return {
     argsAsArray : function(fn, arr) {
-
+        return fn.apply(null, arr);
     },
 
     speak : function(fn, obj) {
-
+        return fn.call(obj);
     },
 
     functionFunction : function(str) {
-
+        return function(arg) {
+            return str + ', ' + arg;
+        };
     },
 
     makeClosures : function(arr, fn) {
+        var newarray = [];
+        var newFunc = function(chastity) {
+            return function() {return fn(chastity);}
+        };
 
+        for (var i = 0; i<arr.length; i++) {
+            newarray.push(newFunc(arr[i]));
+        }
+        return newarray
     },
 
     partial : function(fn, str1, str2) {
-
+        return function(str3) {
+            return fn.call(null, str1, str2, str3);
+        };
     },
 
     useArguments : function() {
-
+        var sum = 0
+        for (var i = 0; i<arguments.length; i++) {
+            sum+= arguments[i];
+        }
+        return sum
     },
 
     callIt : function(fn) {
